@@ -10,7 +10,7 @@ def negative_matrix(x: np.ndarray) -> np.ndarray:
     Returns:
         np.ndarray: A matrix with each element negated.
     """
-    raise NotImplementedError
+    return np.negative(x)
 
 
 def reverse_matrix(x: np.ndarray) -> np.ndarray:
@@ -23,7 +23,7 @@ def reverse_matrix(x: np.ndarray) -> np.ndarray:
     Returns:
         np.ndarray: A matrix with the order of elements reversed.
     """
-    raise NotImplementedError
+    return np.flip(x)
 
 
 def affine_transform(
@@ -42,4 +42,24 @@ def affine_transform(
     Returns:
         np.ndarray: transformed matrix.
     """
-    raise NotImplementedError
+    alpha_rad = np.deg2rad(alpha_deg)
+    cos_alpha = np.cos(alpha_rad)
+    sin_alpha = np.sin(alpha_rad)
+
+    rotation_matrix = np.array([
+        [cos_alpha, -sin_alpha],
+        [sin_alpha, cos_alpha]
+    ])
+    scale_matrix = np.array([
+        [scale[0], 0],
+        [0, scale[1]]
+    ])
+    shear_matrix = np.array([
+        [1, shear[0]],
+        [shear[1], 1]
+    ])
+
+    transform_matrix = shear_matrix @ rotation_matrix @ scale_matrix
+    transformed_points = np.dot(x, transform_matrix.T) + np.array(translate)
+    
+    return transformed_points
