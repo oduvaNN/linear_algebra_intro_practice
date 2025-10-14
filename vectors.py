@@ -65,7 +65,7 @@ def linear_combination(vectors: Sequence[np.ndarray], coeffs: Sequence[float]) -
     Returns:
         np.ndarray: linear combination of vectors.
     """
-    return np.dot(coeffs, np.stack(vectors)) 
+    return np.tensordot(coeffs, np.stack(vectors), axes = 1)
 
 
 def dot_product(x: np.ndarray, y: np.ndarray) -> float:
@@ -78,7 +78,7 @@ def dot_product(x: np.ndarray, y: np.ndarray) -> float:
     Returns:
         float: dot product.
     """
-    return np.dot(x,y)
+    return float(np.dot(x.T, y))
 
 
 def norm(x: np.ndarray, order: int | float) -> float:
@@ -118,7 +118,9 @@ def cos_between_vectors(x: np.ndarray, y: np.ndarray) -> float:
     Returns:
         np.ndarray: angle in deg.
     """
-    return np.degrees(np.arccos(np.dot(x,y) / (np.linalg.norm(x) * np.linalg.norm(y))))
+    theta = dot_product(x, y) / (norm(x, 2) * norm(y, 2))
+    theta = np.clip(theta, -1.0, 1.0)
+    return np.degrees(np.arccos(theta))
 
 
 def is_orthogonal(x: np.ndarray, y: np.ndarray) -> bool:
