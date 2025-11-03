@@ -1,5 +1,5 @@
 import numpy as np
-from scipy.linalg import lu, qr, svd, eig
+from scipy.linalg import lu, qr
 
 def lu_decomposition(x: np.ndarray) -> tuple[np.ndarray, np.ndarray, np.ndarray]:
     """
@@ -53,7 +53,7 @@ def eigen(x: np.ndarray) -> tuple[np.ndarray, np.ndarray]:
     Returns:
         tuple[np.ndarray, np.ndarray]: The eigenvalues and the right eigenvectors of the matrix.
     """
-    eigenvalues, eigenvectors = eig(x)
+    eigenvalues, eigenvectors = np.linalg.eig(x)
     return eigenvalues, eigenvectors
 
 
@@ -67,6 +67,6 @@ def svd(x: np.ndarray) -> tuple[np.ndarray, np.ndarray, np.ndarray]:
     Returns:
         tuple[np.ndarray, np.ndarray, np.ndarray]: The matrices U, S, and V.
     """
-    u, s, vh = svd(x)
-    sigma = np.diag(s)
-    return u, sigma, vh
+    u, s, vh = np.linalg.svd(x, full_matrices=True)
+    return u, s, vh
+
